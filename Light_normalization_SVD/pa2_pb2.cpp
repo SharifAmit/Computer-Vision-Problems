@@ -37,7 +37,7 @@ Mat matrix2img(Matrix padded2d){
     }
     return paddedimg;
 }
-
+/*
 Matrix inverse_mapping(Array affine_arr, Matrix img){
 
     // a11 a12 b1 a21 a22 b2
@@ -46,7 +46,7 @@ Matrix inverse_mapping(Array affine_arr, Matrix img){
     //cout << "div" << endl;
     //cout << "---" << endl;
     //cout << div << endl;
-    Matrix x_prime(40, Array(48));
+    Matrix x_prime(48, Array(40));
     Matrix affine_mat(3, Array(3));
 
     affine_mat[0][0] = affine_arr[4];
@@ -65,14 +65,14 @@ Matrix inverse_mapping(Array affine_arr, Matrix img){
         for(int j=0; j<x_prime[0].size(); j++){
              x = div*((i*affine_mat[0][0]) + (j*affine_mat[1][0]) + (1*affine_mat[2][0]));
              y = div*((i*affine_mat[0][1]) + (j*affine_mat[1][1]) + (1*affine_mat[2][1]));
-             if (x>91){
-                x = 91;
+             if (x>111){
+                x = 111;
              }
              else if (x<0){
                 x=0;
              }
-             if(y>111){
-                y = 111;
+             if(y>91){
+                y = 91;
              }
              else if (y<0){
                 y=0;
@@ -87,43 +87,83 @@ Matrix inverse_mapping(Array affine_arr, Matrix img){
     return x_prime;
 
 }
-
+*/
 Array pointer_to_array(float *c,int l){
     Array arr(l);
-    int k = 0;
     for(int i=1; i<l+1; i++){
-         arr[k] = c[i];
-         k++;
+         arr[i-1] = c[i];
     }
     return arr;
 }
 
-void a_b(float **a, float *b,Matrix img ,int m,int n){
-    int k = 92;
-    int w = 112;
-    //cout << "Value of a" << endl;
-    //cout << "----------" << endl;
-    for(int i=1; i<m+1; i++){
-            for(int j=1; j<n+1; j++){
-                
+Matrix pointer_to_matrix(float **c,int m,int n){
+    Matrix arr_mat(m, Array(n));
 
-            }
+    for(int i=1; i<m+1; i++){
+        for(int j=1; i<n+1; i++){
+         arr_mat[i-1][j-1] = c[i][j];
+        }
+    }
+    return arr_mat;
+}
+
+
+void a_b(float **a, float *b,Matrix img,int m,int n){
+    int k,l = 0;
+
+    for(int i=1; i<m+1; i++){
+        a[i][1] = k;
+        a[i][2] = l;
+        a[i][3] = k*l;
+        a[i][4] = 1;
+        l++;
+        if(l==40){
+            l=0;
+            //cout << k << endl;
+            k++;
+        }
     }
     k = 0;
-    //cout << "          " << endl;
-    //cout << "Value of b" << endl;
-    //cout << "----------" << endl;
+    l = 0 ;
+    //cout << k << endl;
     for(int i=1; i<m+1; i++){
-         b[i] = fixed_points[k];
-         k++;
-    //     cout << b[i]<< " ";
+        b[i] = img[k][l];
+        //cout << l << endl;
+        l++;
+        if(l==40){
+            l=0;
+            //cout << k << endl;
+            k++;
+        }
     }
     //cout << endl;
 
 
 }
 
+Matrix twoDnormalize(Matrix unnormalized){
+    double max = -9999;
+    double min = 99999;
+    Matrix normalized (unnormalized.size(), Array(unnormalized[0].size()));
+    for(int i=0;i<unnormalized.size();i++){
+        for(int j=0; j<unnormalized[0].size();j++){
+            if(unnormalized[i][j]>max){
+                max = unnormalized[i][j];
+            }
+            else if(unnormalized[i][j]<=min){
+                min = unnormalized[i][j];
+            }
+        }
+    }
 
+    for(int i=0;i<normalized.size();i++){
+        for(int j=0; j<normalized[0].size();j++){
+            normalized[i][j] = (int)((unnormalized[i][j] - min)*(255/(max-min)));
+            //cout << normalized[i][j] << endl;
+        }
+    }
+    return normalized;
+}
 
 int main(int argc, char* argv[])
 {
@@ -135,7 +175,7 @@ int main(int argc, char* argv[])
      /* Set m to the number of equations */
      /* Set n to the number of unknowns */
 
-     m = 112*92;
+     m = 1920;
      n = 4;
 
      a = new float* [m+1];
@@ -150,51 +190,57 @@ int main(int argc, char* argv[])
 
      /* Fill matrix a and vector b with the desired values */
      /* The values should be placed at indices 1..m, 1..n */
-    //for(int i=0; i<person_1.len)
+
+
+    double average_over_all_images = 0;
     for(int k=1;k<3;k++){
-        for(int i=1;i<11;i++){4
-            String img_name = "S" + to_string(k) + string("/") + to_string(i)+string(".pgm");
+        for(int i=1;i<11;i++){
+
+            String img_name = "S" + to_string(k) + string("_") + to_string(i) +string(".png");
             Mat img = imread(img_name, IMREAD_GRAYSCALE);
             Matrix img_mat = img2matrix(img);
+
             a_b(a,b,img_mat,m,n);
             solve_system(m,n,a,x,b);
+            //cout << x[1] << endl;
+            //cout << x[2] << endl;
+            //cout << x[3] << endl;
+            //cout << x[4] << endl;
+            Matrix mask(48, Array(40));
 
-            Array x_arr = pointer_to_array(x,n);
-            /* ERROR CALCULATION NEEDED
-
-            error_for_4_points = abs(fixed_points - x_arr)/fixed_points * 100
-
-            */
-            Array x_prime_pred(x_arr.size());
+            Array x_prime_pred(1920);
             for(int i=1;i<m+1;i++){
-                for(int j=1;j<n+1;j++){
-                    x_prime_pred[i-1] += a[i][j]*x_arr[j-1];
+                x_prime_pred[i-1] = a[i][1]*x[1] + a[i][2]*x[2] + a[i][3]*x[3]+ a[i][4]*x[4];
+            }
+
+            //Matrix a_mat = pointer_to_matrix(a,m,n);
+            int w = 0;
+            for(int i=0;i<48;i++){
+                for(int j=0;j<40;j++){
+                    mask[i][j] = x_prime_pred[w];
+                    w++;
+                }
+            }
+            Matrix normalized_mask =  twoDnormalize(mask);
+            Mat converted_mask = matrix2img(normalized_mask);
+            String filename_mask = "S" + to_string(k) + string("_") + to_string(i) + string("_mask")+string(".png");
+            imwrite(filename_mask,converted_mask);
+            Matrix out_img(48, Array(40));
+            //Array b_arr = pointer_to_array(b,m);
+            for(int i=0;i<48;i++){
+                for(int j=0;j<40;j++){
+                    out_img[i][j] = img_mat[i][j]-mask[i][j];
                 }
             }
 
-            double sum = 0;
-            for(int i=1; i<n+1; i++){
-                cout << "          " << endl;
-                cout << "error value: " << i << endl;
-                cout << "-----------" << endl;
-                double diff =  abs(b[i]-x_prime_pred[i-1]);
-                sum += diff;
-                cout << diff << " ";
-            }
-            cout << endl;
-            cout << "          " << endl;
-            cout << "avg error value: " << endl;
-            cout << "-----------" << endl;
-            cout << sum/6 << endl;
-            cout << " " << endl;
-            String img_name = "S" + to_string(k) + string("/") + to_string(i)+string(".pgm");
-            Mat img = imread(img_name, IMREAD_GRAYSCALE);
-            Matrix img_mat = img2matrix(img);
-            Matrix new_img = inverse_mapping(x_arr,img_mat);
-            Mat converted_img = matrix2img(new_img);
-            String filename_img = "S" + to_string(k) + string("_") + to_string(i) +string(".png");
+            //average_over_all_images += sum/8;
+
+            Matrix normalized =  twoDnormalize(out_img);
+            //Matrix new_img = inverse_mapping(x_arr,img_mat);
+            Mat converted_img = matrix2img(normalized);
+            String filename_img = "S" + to_string(k) + string("_") + to_string(i) + string("_light_enhanced")+string(".png");
             imwrite(filename_img,converted_img);
-            cout << "Status: Done, " << filename_img << endl;
+            cout << "Status: Done, " << filename_img << " " << filename_mask << endl;
         }
     }
     //imshow("1",converted_img);
@@ -203,3 +249,4 @@ int main(int argc, char* argv[])
 
 
  }
+

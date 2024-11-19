@@ -1,0 +1,12 @@
+# depslib dependency file v1.0
+1588613267 source:d:\unr\spring 2020\computer vision\assignment04\pa4_pb1\pa4_pb1.cpp
+	<opencv2/opencv.hpp>
+	<opencv2/calib3d/calib3d.hpp>
+	<opencv2/core/core.hpp>
+	<opencv2/imgproc/imgproc.hpp>
+	<opencv2/highgui/highgui.hpp>
+	<stdio.h>
+	<iostream>
+	<vector>
+	<fstream>
+

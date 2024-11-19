@@ -1,0 +1,70 @@
+# depslib dependency file v1.0
+1582923150 source:d:\computer vision\assignment02\affine\solve_system.c
+
+1582923150 source:d:\computer vision\assignment02\affine\svbksb.c
+	<stdio.h>
+	<math.h>
+
+1582923150 source:d:\computer vision\assignment02\affine\svdcmp.c
+	<stdio.h>
+	<stddef.h>
+	<stdlib.h>
+	<math.h>
+
+1582923356 source:d:\computer vision\assignment02\affine\main.cpp
+	<fstream>
+	<iostream>
+	<stdlib.h>
+	<math.h>
+	<vector>
+	<opencv2/opencv.hpp>
+	<opencv2/core/core.hpp>
+	<opencv2/imgproc/imgproc.hpp>
+	<opencv2/highgui/highgui.hpp>
+
+1582956928 source:d:\unr\spring 2020\computer vision\assignment02\pa2_1\solve_system.c
+
+1582956928 source:d:\unr\spring 2020\computer vision\assignment02\pa2_1\svbksb.c
+	<stdio.h>
+	<math.h>
+
+1582956928 source:d:\unr\spring 2020\computer vision\assignment02\pa2_1\svdcmp.c
+	<stdio.h>
+	<stddef.h>
+	<stdlib.h>
+	<math.h>
+
+1583138494 source:d:\unr\spring 2020\computer vision\assignment02\pa2_1\main.cpp
+	<fstream>
+	<iostream>
+	<stdlib.h>
+	<math.h>
+	<vector>
+	<opencv2/opencv.hpp>
+	<opencv2/core/core.hpp>
+	<opencv2/imgproc/imgproc.hpp>
+	<opencv2/highgui/highgui.hpp>
+
+1582956928 source:d:\unr\spring 2020\computer vision\assignment02\submissions\pa2_1\solve_system.c
+
+1582956928 source:d:\unr\spring 2020\computer vision\assignment02\submissions\pa2_1\svbksb.c
+	<stdio.h>
+	<math.h>
+
+1582956928 source:d:\unr\spring 2020\computer vision\assignment02\submissions\pa2_1\svdcmp.c
+	<stdio.h>
+	<stddef.h>
+	<stdlib.h>
+	<math.h>
+
+1583311461 source:d:\unr\spring 2020\computer vision\assignment02\submissions\pa2_1\pa2_pb1.cpp
+	<fstream>
+	<iostream>
+	<stdlib.h>
+	<math.h>
+	<vector>
+	<opencv2/opencv.hpp>
+	<opencv2/core/core.hpp>
+	<opencv2/imgproc/imgproc.hpp>
+	<opencv2/highgui/highgui.hpp>
+
